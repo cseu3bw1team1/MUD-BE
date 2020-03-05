@@ -65,7 +65,7 @@ def move(request):
 @csrf_exempt
 @api_view(["GET"])
 def map(reqest):
-    rooms = Room.objects.all()
+    rooms = Room.objects.order_by('id').all()
     room_list = []
     if len(rooms) > 0:
         for room in rooms:
