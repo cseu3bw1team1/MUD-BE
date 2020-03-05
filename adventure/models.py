@@ -6,12 +6,16 @@ from rest_framework.authtoken.models import Token
 import uuid
 
 class Room(models.Model):
+    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
     n_to = models.IntegerField(default=0)
     s_to = models.IntegerField(default=0)
     e_to = models.IntegerField(default=0)
     w_to = models.IntegerField(default=0)
+    x = models.IntegerField(default=-1)
+    y = models.IntegerField(default=-1)
+
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
         try:
@@ -31,8 +35,10 @@ class Room(models.Model):
                 print("Invalid direction")
                 return
             self.save()
+
     def playerNames(self, currentPlayerID):
         return [p.user.username for p in Player.objects.filter(currentRoom=self.id) if p.id != int(currentPlayerID)]
+
     def playerUUIDs(self, currentPlayerID):
         return [p.uuid for p in Player.objects.filter(currentRoom=self.id) if p.id != int(currentPlayerID)]
 
@@ -41,10 +47,12 @@ class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     currentRoom = models.IntegerField(default=0)
     uuid = models.UUIDField(default=uuid.uuid4, unique=True)
+
     def initialize(self):
         if self.currentRoom == 0:
             self.currentRoom = Room.objects.first().id
             self.save()
+            
     def room(self):
         try:
             return Room.objects.get(id=self.currentRoom)
