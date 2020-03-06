@@ -215,38 +215,3 @@ class World:
 
         # Print string
         print(str)
-
-
-# TO TEST THE CLASS COMMENT OUT THIS CODE
-# w = World()
-# num_rooms = 5
-# width = 2
-# height = 3
-# w.generate_rooms(width, height, num_rooms)
-# w.print_rooms()
-# one_connection = 0
-# two_connection = 0
-# three_connection = 0
-# four_connection = 0
-
-# for row in w.grid:
-#     for room in row:
-#         if room:
-#             count = [room.n_to, room.s_to, room.e_to, room.w_to]
-#             result = count.count(None)
-#             if result == 0:
-#                 four_connection += 1
-#             if result == 1:
-#                 three_connection += 1
-#             if result == 2:
-#                 two_connection += 1
-#             if result == 3:
-#                 one_connection +=1
-
-# print(f'one connection: {one_connection}')
-# print(f'two connection: {two_connection}')
-# print(f'three connection: {three_connection}')
-# print(f'four connection: {four_connection}')
-
-
-# print(f"\n\nWorld\n  height: {height}\n  width: {width},\n  num_rooms: {num_rooms}\n")

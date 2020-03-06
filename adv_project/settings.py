@@ -14,6 +14,7 @@ import django_heroku
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 import os
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,7 +29,10 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "mud-cs.herokuapp.com",
+    "localhost"
+]
 
 
 # Application definition
@@ -86,7 +90,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'adv_project.wsgi.application'
-
+DATABASE_URL = config('DATABASE_URL')
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
@@ -149,6 +153,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
