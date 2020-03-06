@@ -3,20 +3,17 @@ from util.places import places
 
 
 class Room:
-    def __init__(self, id, name, x, y, atmosphere, moons, composition, density, temperature):
+    def __init__(self, id, name, x, y, characters, temperature):
         self.id = id
         self.name = name
-        self.description = f"{name} has {atmosphere} atmosphere, {composition} composition, {moons} moons orbitating around it, a density of {density} gm/cm³, and a temperature of circa {temperature}°"
+        self.description = f"You are now in {name} with an average temperature of {temperature}°C, its residence are often {characters}"
         self.n_to = None
         self.s_to = None
         self.e_to = None
         self.w_to = None
         self.x = x
         self.y = y
-        self.atmosphere = atmosphere
-        self.moons = moons
-        self.composition = composition
-        self.density = density
+        self.characters = characters
         self.temperature = temperature
 
     def __repr__(self):
@@ -76,8 +73,8 @@ class World:
         Note that the matrix should be big enough to contains the number of  rooms
         The rooms are procedurally generated 
         '''
-        atmospheres = ['no', 'hidrogen', 'oxygen', 'helium', 'carbon dioxide']
-        compositions = ['rocky', 'gaseous']
+        characters = ['hostile', 'loving',
+                      'friendly', 'mean', 'carefree']
         # Initialize the grid
         self.grid = [None] * size_y
         self.width = size_x
@@ -91,8 +88,8 @@ class World:
         room_count = 1
         directions = ['n', 's', 'w', 'e']
         # generate the starting room
-        start_room = Room(room_count, "Earth", x, y,
-                          atmospheres[2], 1, compositions[0], 5.5, 30)
+        start_room = Room(room_count, "Cavemen Island", x, y,
+                          characters[2], 25)
         self.grid[y][x] = start_room
         previous_room = start_room
 
@@ -118,14 +115,11 @@ class World:
             else:
                 continue
             room_name = places[random.randrange(0, len(places))]
-            room_atm = atmospheres[random.randrange(0, len(atmospheres))]
-            room_moons = random.randint(0, 5)
-            room_cmp = compositions[random.randrange(0, len(compositions))]
-            room_dnsty = random.uniform(0.1, 10)
+            room_char = characters[random.randrange(0, len(characters))]
             room_tmp = random.randint(-121, 975)
             room_count += 1
-            room = Room(room_count, room_name, x, y, room_atm, room_moons, room_cmp,
-                        room_dnsty, room_tmp)  # Create a room in the given direction
+            room = Room(room_count, room_name, x, y, room_char,
+                        room_tmp)  # Create a room in the given direction
             # Save the room in the World grid
             self.grid[y][x] = room
             # Connect the new room to the previous room
@@ -153,21 +147,18 @@ class World:
                 else:
                     continue
                 room_name = places[random.randrange(0, len(places))]
-                room_atm = atmospheres[random.randrange(0, len(atmospheres))]
-                room_moons = random.randint(0, 5)
-                room_cmp = compositions[random.randrange(0, len(compositions))]
-                room_dnsty = random.uniform(0.1, 10)
+                room_char = characters[random.randrange(0, len(characters))]
                 room_tmp = random.randint(-121, 975)
                 room_count += 1
                 # during the last iteration
                 if room_count == num_rooms:
-                    end_room = Room(room_count, room_name, x, y, room_atm, room_moons,
-                                    room_cmp, room_dnsty, room_tmp)  # we set the end room
+                    end_room = Room(room_count, room_name, x, y, room_char,
+                                    room_tmp)  # we set the end room
                     self.grid[y][x] = end_room
                     previous_room.connect_rooms(end_room, direction)
                     break
-                room = Room(room_count, room_name, x, y, room_atm,
-                            room_moons, room_cmp, room_dnsty, room_tmp)
+                room = Room(room_count, room_name, x, y, room_char,
+                            room_tmp)
                 self.grid[y][x] = room
                 previous_room.connect_rooms(room, direction)
 
