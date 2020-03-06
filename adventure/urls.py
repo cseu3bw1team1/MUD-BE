@@ -4,6 +4,6 @@ from . import api
 urlpatterns = [
     url('init', api.initialize),
     url('move', api.move),
-    url('map', api.map),
     url('say', api.say),
+    url('rooms', api.get_rooms),
 ]
